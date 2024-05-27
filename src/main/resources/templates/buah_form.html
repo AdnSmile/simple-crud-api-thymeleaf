@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0" />
+    <title>Berijalan | Technical Test</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}" />
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+    <div th:replace="/header :: header"></div>
+
+    <h2 class="text-center">[[${pageTitle}]]</h2>
+
+    <div class="my-3">
+        <form th:action="@{/buah/save}" method="post" enctype="multipart/form-data" th:object="${buah}"
+              style="max-width: 550px; margin: 0 auto">
+
+            <input type="hidden" th:field="*{id}" />
+
+            <div class="p-3">
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" for="nama">Nama</label>
+                    <div class="col-sm-9">
+                        <input type="text" th:field="*{nama}" required minlength="2" maxlength="100" class="form-control"
+                               id="nama" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" for="warna">Warna</label>
+                    <div class="col-sm-9">
+                        <input type="text" th:field="*{warna}" required minlength="2" maxlength="100" class="form-control"
+                               id="warna" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" for="berat">Berat(gram)</label>
+                    <div class="col-sm-9">
+                        <input type="number" th:field="*{berat}" required min="1"
+                               class="form-control" id="berat" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" for="asal">Asal</label>
+                    <div class="col-sm-9">
+                        <input type="text" th:field="*{asal}" required minlength="2" maxlength="100" class="form-control"
+                               id="asal" />
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label" for="deskripsi">Deskripsi</label>
+                    <div class="col-sm-9">
+                        <textarea type="text" th:field="*{deskripsi}" minlength="2" maxlength="256" class="form-control"
+                                  id="deskripsi" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <div class="text-right">
+                    <input type="submit" value="Save" class="btn btn-success btn-sm mr-2" />
+                    <input type="button" value="Cancel" id="btnCancel" class="btn btn-secondary btn-sm" />
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnCancel").on("click", function () {
+                window.location = "[[@{/buah}]]";
+            });
+        });
+    </script>
+</body>
+
+</html>
