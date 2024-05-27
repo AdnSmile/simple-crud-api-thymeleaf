@@ -5,11 +5,15 @@ import com.berijalan.technicaltest.exception.NotFoundException;
 import com.berijalan.technicaltest.repository.BuahRepository;
 import com.berijalan.technicaltest.response.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
@@ -104,11 +108,19 @@ public class BuahController {
     // table buah
     @GetMapping("buah")
     public String getAll(Model model) {
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            String apiUrl = "http://localhost:8081/api/buah"; // Sesuaikan dengan URL API Anda
+            ResponseEntity<ApiResponse<List<Buah>>> response = restTemplate.exchange(
+                    apiUrl, HttpMethod.GET, null, new ParameterizedTypeReference<>() {}
+            );
 
-        try{
-            List<Buah> listBuah = new ArrayList<>(buahRepository.findAllBuah());
-
-            model.addAttribute("buah", listBuah);
+            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+                List<Buah> listBuah = response.getBody().getData();
+                model.addAttribute("buah", listBuah);
+            } else {
+                model.addAttribute("message", "Gagal mengambil data buah");
+            }
         } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
         }
@@ -134,9 +146,18 @@ public class BuahController {
 
         try {
 
-            buahRepository.save(buah);
+            RestTemplate restTemplate = new RestTemplate();
+            String apiUrl = "http://localhost:8081/api/buah";
+            HttpEntity<Buah> request = new HttpEntity<>(buah);
+            ResponseEntity<ApiResponse<Buah>> response = restTemplate.exchange(
+                    apiUrl, HttpMethod.POST, request, new ParameterizedTypeReference<>() {}
+            );
 
-            redirectAttributes.addFlashAttribute("message", "Data buah berhasil disimpan!");
+            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+                redirectAttributes.addFlashAttribute("message", "Data buah berhasil disimpan!");
+            } else {
+                redirectAttributes.addFlashAttribute("message", "Data buah gagal disimpan!");
+            }
 
         } catch (Exception e) {
             redirectAttributes.addAttribute("message", e.getMessage());
@@ -170,9 +191,17 @@ public class BuahController {
 
         try {
 
-            buahRepository.deleteBuahById(id);
+            RestTemplate restTemplate = new RestTemplate();
+            String apiUrl = "http://localhost:8081/api/buah/" + id;
+            ResponseEntity<ApiResponse<Buah>> response = restTemplate.exchange(
+                    apiUrl, HttpMethod.DELETE, null, new ParameterizedTypeReference<>() {}
+            );
 
-            redirectAttributes.addFlashAttribute("message", "Buah dengan ID: " + id + " berhasil dihapus!");
+            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+                redirectAttributes.addFlashAttribute("message", "Buah dengan ID: " + id + " berhasil dihapus!");
+            } else {
+                redirectAttributes.addFlashAttribute("message", "Buah dengan ID: " + id + " gagal dihapus!");
+            }
 
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("message", e.getMessage());
