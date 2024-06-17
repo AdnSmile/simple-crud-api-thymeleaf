@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Transactional
@@ -19,4 +20,7 @@ public interface BuahRepository extends JpaRepository<Buah, Integer> {
     @Query("UPDATE Buah b SET b.isDeleted=true WHERE b.id=:id")
     @Modifying
     void deleteBuahById(Integer id);
+
+//    @Query("SELECT b FROM Buah b WHERE b.id=:id AND b.isDeleted=false")
+//    Optional<T> findBuahById(Integer id);
 }
