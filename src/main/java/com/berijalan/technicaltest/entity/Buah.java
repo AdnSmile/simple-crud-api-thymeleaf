@@ -1,6 +1,7 @@
 package com.berijalan.technicaltest.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "buah")
@@ -10,18 +11,23 @@ public class Buah {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotNull
     @Column(length = 100, nullable = false)
     private String nama;
 
+    @NotNull
     @Column(length = 100)
     private String warna;
 
+    @NotNull
     @Column(length = 256)
     private String deskripsi;
 
+    @NotNull
     @Column
     private int berat;
 
+    @NotNull
     @Column(length = 100)
     private String asal;
 

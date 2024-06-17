@@ -87,6 +87,7 @@ public class BuahController {
         }
     }
 
+    // delete api buah
     @DeleteMapping(value = "/api/buah/{id}", produces = "application/json")
     public ResponseEntity<ApiResponse<Buah>> deleteBuah(@PathVariable("id") Integer id) {
 
@@ -147,10 +148,11 @@ public class BuahController {
         try {
 
             RestTemplate restTemplate = new RestTemplate();
-            String apiUrl = "http://localhost:8081/api/buah";
+            String apiUrl = buah.getId() == null ? "http://localhost:8081/api/buah" : "http://localhost:8081/api/buah/"+buah.getId();
+            HttpMethod method = buah.getId() == null ? HttpMethod.POST : HttpMethod.PUT;
             HttpEntity<Buah> request = new HttpEntity<>(buah);
             ResponseEntity<ApiResponse<Buah>> response = restTemplate.exchange(
-                    apiUrl, HttpMethod.POST, request, new ParameterizedTypeReference<>() {}
+                    apiUrl, method, request, new ParameterizedTypeReference<>() {}
             );
 
             if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
