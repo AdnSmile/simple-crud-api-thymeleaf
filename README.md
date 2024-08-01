@@ -1,6 +1,6 @@
 ## Simple CRUD Thymeleaf Website
 
-Simple CRUD thymeleaf website with Spring Boot and PostgreSQL Database
+Simple CRUD thymeleaf website with Bootstrap, Spring Boot, and PostgreSQL Database
 
 ### Website Interface
 <img src="https://github.com/user-attachments/assets/21f2fb57-1127-45be-9533-1c4787d1a1d0" alt="List Restaurant" width="800"/> <br>
