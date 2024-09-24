@@ -1,0 +1,21 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:14.1
+    environment:
+      POSTGRES_DB: berijalan
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345678
+    ports:
+      - "5432:5432"
+
+  app:
+    image: technical-test:0.0.1
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/berijalan
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 12345678
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres
